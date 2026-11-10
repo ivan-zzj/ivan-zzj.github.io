@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zijun Zhou — Homepage</title>
+<meta name="description" content="Zijun Zhou (Ivan) — Undergraduate at Wuhan University, incoming Master's student at Tsinghua University SIGS. Research interests: multimodal generative models, world models, agents.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #111418;
+    --body: #3a3f45;
+    --muted: #8a919a;
+    --line: #e4e7eb;
+    --accent: #0f62fe;
+    --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+    --sans: "Inter", -apple-system, "Segoe UI", sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: #fafbfc;
+    color: var(--body);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 72px 24px 80px;
+  }
+
+  /* ============ Hero ============ */
+  .hero {
+    display: flex;
+    gap: 44px;
+    align-items: flex-start;
+  }
+  .hero-text { flex: 1; min-width: 0; }
+  .hero h1 {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+  }
+  .hero .zh {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: 2px;
+  }
+  .hero .affil {
+    margin-top: 14px;
+    font-size: 14.5px;
+    color: var(--body);
+  }
+  .hero .affil strong { color: var(--ink); font-weight: 600; }
+  .hero img {
+    width: 168px;
+    height: 190px;
+    object-fit: cover;
+    object-position: 50% 32%;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .links {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+  }
+  .links a {
+    color: var(--body);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    transition: .15s;
+  }
+  .links a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .links .key { color: var(--muted); margin-right: 5px; }
+
+  /* ============ Sections ============ */
+  section { margin-top: 52px; }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 20px;
+  }
+  .sec-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+  .sec-title {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--ink);
+  }
+
+  p.bio { font-size: 14.5px; }
+  p.bio + p.bio { margin-top: 10px; }
+  p.bio a { color: var(--accent); text-decoration: none; }
+  p.bio a:hover { text-decoration: underline; }
+
+  .item { margin-bottom: 18px; }
+  .item:last-child { margin-bottom: 0; }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .row .main { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .row .main .plain { font-weight: 400; color: var(--body); font-size: 13.5px; margin-left: 8px; }
+  .row .date {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .sub-line { font-size: 13.5px; color: var(--body); margin-top: 4px; }
+  .sub-line .hl { color: var(--ink); font-weight: 600; }
+  .venue {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    border: 1px solid #cfdffe;
+    background: #f2f7ff;
+    border-radius: 3px;
+    padding: 1px 8px;
+    margin-left: 8px;
+    vertical-align: 1px;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--body);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 4px 12px;
+  }
+
+  footer {
+    margin-top: 72px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 600px) {
+    .hero { flex-direction: column-reverse; }
+    .hero img { width: 140px; height: 158px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Zijun Zhou</h1>
+      <div class="zh">周子竣 · Ivan</div>
+      <p class="affil">
+        Undergraduate, <strong>Wuhan University</strong><br>
+        Incoming M.Eng. student, <strong>Tsinghua University (SIGS)</strong>
+      </p>
+      <div class="links">
+        <a href="mailto:zzjivan@whu.edu.cn"><span class="key">mail</span>zzjivan@whu.edu.cn</a>
+        <a href="https://github.com/ivan-zzj" target="_blank"><span class="key">github</span>ivan-zzj</a>
+      </div>
+    </div>
+    <img src="photo.jpg" alt="Zijun Zhou">
+  </div>
+
+  <!-- About -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">About</span>
+    </div>
+    <p class="bio">
+      I am a junior undergraduate majoring in Spatial Information and Digital Technology at the
+      School of Remote Sensing and Information Engineering, Wuhan University, ranking
+      <strong>7/367 (top 1.9%)</strong> in my grade. I will join Tsinghua Shenzhen International
+      Graduate School (SIGS) in 2027 as a recommended-admission Master's student in
+      Computer Technology, advised by <a href="https://liweijia.github.io/" target="_blank">Prof. Weijia Li</a>.
+    </p>
+    <p class="bio">
+      My research interests lie in <strong>multimodal generative models</strong>, <strong>world
+      models</strong>, and <strong>agents</strong>. I am currently seeking research internship
+      opportunities in these directions.
+    </p>
+  </section>
+
+  <!-- Education -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">Education</span>
+    </div>
+    <div class="item">
+      <div class="row">
+        <div class="main">Tsinghua University, SIGS<span class="plain">M.Eng. in Computer Technology (recommended admission)</span></div>
+        <div class="date">2027 — 2029 (expected)</div>
+      </div>
+      <div class="sub-line">Advisor: <a href="https://liweijia.github.io/" target="_blank" style="color:inherit;">Prof. Weijia Li</a> · Research: world models, agents</div>
+    </div>
+    <div class="item">
+      <div class="row">
+        <div class="main">Wuhan University<span class="plain">B.Eng. in Spatial Information and Digital Technology</span></div>
+        <div class="date">2023 — 2027 (expected)</div>
+      </div>
+      <div class="sub-line">School of Remote Sensing and Information Engineering · GPA rank: <span class="hl">7/367 (top 1.9%)</span></div>
+    </div>
+  </section>
+
+  <!-- Publications -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">Publications</span>
+    </div>
+    <div class="item">
+      <div class="row">
+        <div class="main">Sim(3)-TurboReg<span class="venue">IEEE RA-L · Under Review</span></div>
+      </div>
+      <div class="sub-line"><span class="hl">Zijun Zhou</span> (first author), et al.</div>
+    </div>
+  </section>
+
+  <!-- Interests -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">Research Interests</span>
+    </div>
+    <div class="tags">
+      <span class="tag">Multimodal Generative Models</span>
+      <span class="tag">World Models</span>
+      <span class="tag">Agents</span>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Zijun Zhou</span>
+    <span>Last updated: Nov 2026</span>
+  </footer>
+
+</div>
+</body>
+</html>
