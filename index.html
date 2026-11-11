@@ -168,7 +168,7 @@ section[id]{scroll-margin-top:24px}
   var count = null;
 
   // 连击变大：间隔 <=300ms 每次 +5%，上限 1.6 倍；慢点或停 400ms 恢复原样
-  var MAX_SCALE = 5, STEP = 0.01, FAST_MS = 300, RESET_MS = 400;
+  var MAX_SCALE = 5, STEP = 0.05, FAST_MS = 300, RESET_MS = 400;
   var scale = 1, lastClick = 0, resetTimer = null;
 
   function applyScale() {
@@ -186,25 +186,24 @@ section[id]{scroll-margin-top:24px}
 
   function render(n) {
     count = n;
+    localStorage.setItem("clawd-clicks", String(n));
     out.textContent = n.toLocaleString();
   }
   function localGet() {
-    var v = parseInt(localStorage.getItem("clawd-clicks") || "0", 10);
-    render(v);
+    render(parseInt(localStorage.getItem("clawd-clicks") || "0", 10));
   }
   function localBump() {
-    var v = (count || 0) + 1;
-    localStorage.setItem("clawd-clicks", String(v));
-    render(v);
+    render((count || 0) + 1);
   }
 
-  // 载入当前全站总数
+  // 先显示本地缓存，再拉全站总数校正，避免一直停在 "…"
+  localGet();
   fetch(API + "/get/" + NS)
     .then(function (r) { return r.json(); })
     .then(function (d) {
-      if (typeof d.value === "number") render(d.value); else localGet();
+      if (typeof d.value === "number") render(d.value);
     })
-    .catch(localGet);
+    .catch(function () {});
 
   function pop(x, y) {
     var s = document.createElement("span");
@@ -223,13 +222,14 @@ section[id]{scroll-margin-top:24px}
     grow();
     var r = el.getBoundingClientRect();
     pop(e.clientX || r.left + r.width / 2, (e.clientY || r.top) - 8);
-    // 全站计数 +1，失败则退回本地计数
+    // 先本地 +1 乐观更新，全站计数返回后再校正
+    localBump();
     fetch(API + "/hit/" + NS)
       .then(function (r2) { return r2.json(); })
       .then(function (d) {
-        if (typeof d.value === "number") render(d.value); else localBump();
+        if (typeof d.value === "number") render(d.value);
       })
-      .catch(localBump);
+      .catch(function () {});
   }
 
   el.addEventListener("click", click);
