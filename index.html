@@ -168,7 +168,7 @@ section[id]{scroll-margin-top:24px}
   var count = null;
 
   // 连击变大：间隔 <=300ms 每次 +5%，上限 1.6 倍；慢点或停 400ms 恢复原样
-  var MAX_SCALE = 1.6, STEP = 0.05, FAST_MS = 300, RESET_MS = 400;
+  var MAX_SCALE = 5, STEP = 0.01, FAST_MS = 300, RESET_MS = 400;
   var scale = 1, lastClick = 0, resetTimer = null;
 
   function applyScale() {
