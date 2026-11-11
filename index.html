@@ -45,6 +45,18 @@ section[id]{scroll-margin-top:24px}
 .honors-list{margin:0;padding-left:19px;font-size:13px}
 .honors-list li{margin-bottom:9px;padding-left:1px}
 .secondary{color:#555;font-size:13px}
+
+/* Claude mascot */
+.clawd{position:fixed;right:22px;bottom:22px;z-index:99;display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.clawd svg{width:64px;height:64px;filter:drop-shadow(0 3px 6px rgba(200,95,63,.35));transition:transform .15s}
+.clawd:hover svg{transform:scale(1.06)}
+.clawd.squish svg{animation:squish .38s ease}
+.clawd-count{margin-top:6px;font-size:12px;font-weight:700;color:#D97757;background:#fff;border:1.5px solid #f0c4b3;border-radius:11px;padding:1px 10px;min-width:36px;text-align:center;box-shadow:0 2px 5px rgba(0,0,0,.06)}
+.clawd .eye{animation:blink 4.5s infinite;transform-box:fill-box;transform-origin:center}
+@keyframes squish{25%{transform:scale(1.22,.68)}55%{transform:scale(.88,1.14)}75%{transform:scale(1.06,.94)}100%{transform:none}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.12)}}
+.plus-one{position:fixed;z-index:100;font-size:15px;font-weight:700;color:#D97757;pointer-events:none;animation:rise .85s ease-out forwards}
+@keyframes rise{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-46px)}}
 @media(max-width:650px){
   body{font-size:13px}
   .nav-shell{padding:13px 20px}
@@ -131,5 +143,79 @@ section[id]{scroll-margin-top:24px}
   </section>
 
 </main>
+
+<!-- Claude mascot click counter -->
+<div id="clawd" class="clawd" role="button" tabindex="0" aria-label="Click the Claude mascot" title="Click me!">
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+    <rect x="12" y="16" width="76" height="68" rx="20" fill="#D97757"/>
+    <rect x="12" y="16" width="76" height="68" rx="20" fill="none" stroke="#c85f3f" stroke-width="2.5"/>
+    <ellipse class="eye" cx="40" cy="48" rx="5.5" ry="8" fill="#33231b"/>
+    <ellipse class="eye" cx="60" cy="48" rx="5.5" ry="8" fill="#33231b"/>
+    <path class="mouth" d="M42 66 Q50 72 58 66" stroke="#33231b" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </svg>
+  <span class="clawd-count" id="clawd-count">…</span>
+</div>
+
+<script>
+(function () {
+  var API = "https://abacus.jasoncameron.dev";
+  var NS = "ivan-zzj-homepage/clawd-clicks";
+  var el = document.getElementById("clawd");
+  var out = document.getElementById("clawd-count");
+  var count = null;
+
+  function render(n) {
+    count = n;
+    out.textContent = n.toLocaleString();
+  }
+  function localGet() {
+    var v = parseInt(localStorage.getItem("clawd-clicks") || "0", 10);
+    render(v);
+  }
+  function localBump() {
+    var v = (count || 0) + 1;
+    localStorage.setItem("clawd-clicks", String(v));
+    render(v);
+  }
+
+  // 载入当前全站总数
+  fetch(API + "/get/" + NS)
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (typeof d.value === "number") render(d.value); else localGet();
+    })
+    .catch(localGet);
+
+  function pop(x, y) {
+    var s = document.createElement("span");
+    s.className = "plus-one";
+    s.textContent = "+1";
+    s.style.left = x + "px";
+    s.style.top = y + "px";
+    document.body.appendChild(s);
+    setTimeout(function () { s.remove(); }, 900);
+  }
+
+  function click(e) {
+    el.classList.remove("squish");
+    void el.offsetWidth; // 重启动画
+    el.classList.add("squish");
+    var r = el.getBoundingClientRect();
+    pop(e.clientX || r.left + r.width / 2, (e.clientY || r.top) - 8);
+    // 全站计数 +1，失败则退回本地计数
+    fetch(API + "/hit/" + NS)
+      .then(function (r2) { return r2.json(); })
+      .then(function (d) {
+        if (typeof d.value === "number") render(d.value); else localBump();
+      })
+      .catch(localBump);
+  }
+
+  el.addEventListener("click", click);
+  el.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); click(e); }
+  });
+})();
+</script>
 </body>
 </html>
