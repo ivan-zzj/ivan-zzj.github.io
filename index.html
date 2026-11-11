@@ -167,13 +167,13 @@ section[id]{scroll-margin-top:24px}
   var label = el.querySelector(".clawd-label");
   var count = null;
 
-  // 连击变大：间隔 <=300ms 每次 +5%，上限 1.6 倍；慢点或停 400ms 恢复原样
-  var MAX_SCALE = 5, STEP = 0.05, FAST_MS = 300, RESET_MS = 400;
+  // 连击变大：间隔 <=300ms 每次 +5%，上限 3 倍；慢点或停 400ms 恢复原样，到顶停留 2s
+  var MAX_SCALE = 3, STEP = 0.05, FAST_MS = 300, RESET_MS = 400, MAX_HOLD_MS = 2000;
   var scale = 1, lastClick = 0, resetTimer = null;
 
   function applyScale() {
     el.style.transform = scale === 1 ? "" : "scale(" + scale.toFixed(2) + ")";
-    label.textContent = scale >= MAX_SCALE ? "kyc" : "click me to get a Claude account";
+    label.textContent = scale >= MAX_SCALE ? "Congraduations! Verify with your camera!" : "click me to get a Claude account";
   }
   function grow() {
     var now = Date.now();
@@ -181,7 +181,8 @@ section[id]{scroll-margin-top:24px}
     lastClick = now;
     applyScale();
     clearTimeout(resetTimer);
-    resetTimer = setTimeout(function () { scale = 1; applyScale(); }, RESET_MS);
+    resetTimer = setTimeout(function () { scale = 1; applyScale(); },
+      scale >= MAX_SCALE ? MAX_HOLD_MS : RESET_MS);
   }
 
   function render(n) {
