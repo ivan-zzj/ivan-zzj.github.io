@@ -38,6 +38,9 @@ section[id]{scroll-margin-top:24px}
 .school-top h3 span{font-weight:400;font-size:12px;color:#666;margin-left:6px}
 .date{font-size:12px;color:var(--muted);white-space:nowrap}
 .education-detail p{font-size:13px;margin:1px 0}
+.pub-item{display:flex;align-items:flex-start;gap:22px}
+.pub-teaser{width:300px;flex-shrink:0;border:1px solid var(--line);border-radius:6px}
+.pub-text{flex:1;min-width:0}
 .paper-info h3{font-size:14px;margin-bottom:5px;line-height:1.55}
 .paper-meta{font-size:12px;color:#666;margin-bottom:7px}
 .paper-meta .venue{color:#333;font-weight:600}
@@ -75,6 +78,8 @@ section[id]{scroll-margin-top:24px}
   .education-item{gap:14px;align-items:flex-start}
   .school-logo{width:45px;height:45px;margin-top:4px}
   .education-detail p{font-size:12px}
+  .pub-item{flex-direction:column}
+  .pub-teaser{width:100%}
 }
 </style>
 </head>
@@ -130,10 +135,14 @@ section[id]{scroll-margin-top:24px}
 
   <section id="publications" class="homepage-section">
     <h2>Publications</h2>
-    <article class="paper-info">
-      <h3>Sim(3)-TurboReg: Robust and Efficient Scale-Aware Registration via Tri-Scale Consistency</h3>
-      <p class="paper-meta"><strong>Zijun Zhou</strong>, et al. · <span class="venue">IEEE Robotics and Automation Letters (RA-L), Under Review</span></p>
-      <p class="paper-links"><a href="https://arxiv.org/abs/2611.14135">arXiv</a><a href="https://github.com/ivan-zzj/Sim3-TurboReg">Code</a></p>
+    <article class="pub-item">
+      <img class="pub-teaser" src="teaser.png" width="2100" height="1020" alt="Sim(3)-TurboReg teaser: robust registration under heavy outliers and streaming reconstruction with lower drift">
+      <div class="paper-info pub-text">
+        <h3>Sim(3)-TurboReg: Robust and Efficient Scale-Aware Registration via Tri-Scale Consistency</h3>
+        <p class="paper-meta"><strong>Zijun Zhou</strong><sup>*</sup>, Shaocheng Yan, Zhenjun Zhao, Yutong Hu, Ke Yang, Yingdong Gu, Pengcheng Shi, Jiayuan Li</p>
+        <p class="paper-meta"><span class="venue">IEEE Robotics and Automation Letters (RA-L), Under Review</span> · <sup>*</sup>First author</p>
+        <p class="paper-links"><a href="https://arxiv.org/abs/2611.14135">arXiv</a><a href="https://github.com/ivan-zzj/Sim3-TurboReg">Code</a></p>
+      </div>
     </article>
   </section>
 
@@ -203,7 +212,7 @@ section[id]{scroll-margin-top:24px}
     render((count || 0) + 1);
   }
 
-  // 先显示本地缓存，再拉全站总数校正，避免一直停在 "…"
+  // 先显示本地缓存，仅页面加载（刷新）时拉取全站总数校正一次
   localGet();
   fetch(API + "/get/" + NS)
     .then(function (r) { return r.json(); })
@@ -229,14 +238,9 @@ section[id]{scroll-margin-top:24px}
     grow();
     var r = el.getBoundingClientRect();
     pop(e.clientX || r.left + r.width / 2, (e.clientY || r.top) - 8);
-    // 先本地 +1 乐观更新，全站计数返回后再校正
+    // 点击只更新本地计数并显示，上报后台但不取用返回值，避免数字回跳
     localBump();
-    fetch(API + "/hit/" + NS)
-      .then(function (r2) { return r2.json(); })
-      .then(function (d) {
-        if (typeof d.value === "number") render(d.value);
-      })
-      .catch(function () {});
+    fetch(API + "/hit/" + NS).catch(function () {});
   }
 
   el.addEventListener("click", click);
